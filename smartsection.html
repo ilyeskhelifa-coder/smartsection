@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartSection – Intelligentes Einkaufen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #1a1a2e;
+    --white: #fafafa;
+    --gray-light: #f3f4f6;
+    --gray-mid: #d1d5db;
+    --gray-muted: #9ca3af;
+    --blue: #00b9f1;
+    --blue-light: #e0f7fe;
+    --blue-dark: #0088b3;
+    --green: #a1c93a;
+    --green-light: #eef6d0;
+    --green-dark: #6e8e20;
+    --gray-brand: #939497;
+    --gray-brand-light: #f0f0f1;
+    --text: #1a1a2e;
+    --text-muted: #6b7280;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 5vw;
+    background: rgba(250,250,250,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-mid);
+  }
+
+  .nav-logo img { height: 52px; width: auto; }
+
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none; align-items: center;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--blue); }
+
+  .nav-cta {
+    background: var(--blue) !important;
+    color: #fff !important;
+    padding: 0.55rem 1.4rem !important;
+    border-radius: 99px !important;
+    font-weight: 700 !important;
+    font-size: 0.875rem !important;
+    transition: background 0.2s, transform 0.1s !important;
+    box-shadow: 0 4px 14px rgba(0,185,241,0.3) !important;
+  }
+  .nav-cta:hover { background: var(--blue-dark) !important; transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 7rem 5vw 4rem;
+    gap: 4rem;
+    background: linear-gradient(135deg, #f0f9ff 0%, #f8ffe0 100%);
+  }
+
+  .hero-text { max-width: 580px; }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    background: var(--green-light);
+    padding: 0.3rem 0.9rem;
+    border-radius: 99px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+  }
+
+  .hero h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    margin-bottom: 1.25rem;
+    font-weight: 800;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--blue);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 440px;
+    margin-bottom: 2.25rem;
+    font-weight: 300;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--blue);
+    color: #fff;
+    padding: 0.85rem 1.8rem;
+    border-radius: 99px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 6px 20px rgba(0,185,241,0.35);
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); }
+  .btn-primary .arrow { transition: transform 0.2s; }
+  .btn-primary:hover .arrow { transform: translateX(3px); }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid var(--gray-mid);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--blue); border-color: var(--blue); }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem;
+    margin-top: 3rem; padding-top: 2rem;
+    border-top: 1px solid var(--gray-mid);
+  }
+  .hero-stat-num {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    color: var(--blue);
+  }
+  .hero-stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  /* HERO VISUAL */
+  .hero-visual {
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .brain-logo-hero {
+    width: 320px;
+    height: 320px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 60px rgba(0,185,241,0.2));
+    animation: floatY 4s ease-in-out infinite;
+  }
+
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+
+  /* SECTION DEFAULTS */
+  section { padding: 6rem 5vw; }
+
+  .section-tag {
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 0.6rem;
+  }
+
+  .section-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.9rem, 3vw, 2.8rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    color: var(--black);
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    font-size: 1rem; color: var(--text-muted);
+    max-width: 500px; line-height: 1.7; font-weight: 300;
+  }
+
+  /* FEATURES */
+  .features-bg { background: var(--gray-light); }
+
+  .features-header {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: end; margin-bottom: 3.5rem;
+  }
+
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+  .feature-card {
+    background: var(--white);
+    border: 1.5px solid var(--gray-mid);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.75rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,185,241,0.1); }
+
+  .feature-icon {
+    width: 48px; height: 48px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1.25rem;
+  }
+  .feature-icon.blue { background: var(--blue-light); }
+  .feature-icon.green { background: var(--green-light); }
+  .feature-icon.gray { background: var(--gray-brand-light); }
+
+  .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--black); }
+  .feature-card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; }
+
+  /* PRODUCTS */
+  .products-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-end; margin-bottom: 3rem;
+  }
+
+  .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+
+  .product-tile {
+    border: 1.5px solid var(--gray-mid);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: var(--white);
+  }
+  .product-tile:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,185,241,0.12); }
+
+  .product-tile-img {
+    aspect-ratio: 4/5;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem; position: relative;
+  }
+  .product-tile:nth-child(1) .product-tile-img { background: linear-gradient(135deg, #e0f7fe, #d0f0fc); }
+  .product-tile:nth-child(2) .product-tile-img { background: linear-gradient(135deg, #eef6d0, #e4f2bf); }
+  .product-tile:nth-child(3) .product-tile-img { background: linear-gradient(135deg, #f0f0f1, #e4e4e6); }
+  .product-tile:nth-child(4) .product-tile-img { background: linear-gradient(135deg, #e0f7fe, #eef6d0); }
+
+  .product-tile-new {
+    position: absolute; top: 0.75rem; left: 0.75rem;
+    background: var(--blue); color: #fff;
+    font-size: 0.65rem; font-weight: 700;
+    padding: 0.2rem 0.7rem; border-radius: 99px; letter-spacing: 0.06em;
+  }
+
+  .product-tile-info { padding: 1rem 1.1rem 1.25rem; }
+  .product-tile-cat { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.25rem; }
+  .product-tile-name { font-weight: 700; font-size: 0.95rem; color: var(--black); margin-bottom: 0.5rem; }
+
+  .product-tile-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; }
+  .product-price { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--black); }
+
+  .add-btn {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--blue); color: #fff; border: none;
+    cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 4px 10px rgba(0,185,241,0.35);
+  }
+  .add-btn:hover { background: var(--blue-dark); transform: scale(1.1); }
+
+  /* PRICING */
+  .pricing-bg { background: linear-gradient(135deg, #f0f9ff 0%, #f8ffe0 100%); }
+  .pricing-header { text-align: center; margin-bottom: 3.5rem; }
+  .pricing-header .section-sub { margin: 0 auto; }
+
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 980px; margin: 0 auto; }
+
+  .pricing-card {
+    background: var(--white);
+    border: 1.5px solid var(--gray-mid);
+    border-radius: var(--radius-xl);
+    padding: 2.25rem 2rem;
+    transition: transform 0.2s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); }
+
+  .pricing-card.featured {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+    transform: scale(1.04);
+    box-shadow: 0 20px 60px rgba(0,185,241,0.35);
+  }
+  .pricing-card.featured:hover { transform: scale(1.04) translateY(-4px); }
+
+  .pricing-card-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--text-muted); }
+  .pricing-card.featured .pricing-card-tag { color: rgba(255,255,255,0.8); }
+
+  .pricing-price { font-family: 'Nunito', sans-serif; font-size: 2.75rem; font-weight: 800; line-height: 1; margin-bottom: 0.25rem; }
+  .pricing-period { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.75rem; }
+  .pricing-card.featured .pricing-period { color: rgba(255,255,255,0.65); }
+
+  .pricing-divider { height: 1px; background: var(--gray-mid); margin-bottom: 1.5rem; }
+  .pricing-card.featured .pricing-divider { background: rgba(255,255,255,0.2); }
+
+  .pricing-features { list-style: none; margin-bottom: 2rem; }
+  .pricing-features li { font-size: 0.875rem; color: var(--text-muted); padding: 0.4rem 0; display: flex; gap: 0.6rem; align-items: flex-start; }
+  .pricing-card.featured .pricing-features li { color: rgba(255,255,255,0.85); }
+  .pricing-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+  .pricing-card.featured .pricing-features li::before { color: var(--green-light); }
+
+  .pricing-btn {
+    width: 100%; padding: 0.85rem; border-radius: 99px;
+    font-size: 0.9rem; font-weight: 700; cursor: pointer;
+    border: 2px solid var(--gray-mid);
+    background: transparent; color: var(--text);
+    transition: all 0.2s;
+  }
+  .pricing-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .pricing-card.featured .pricing-btn { background: #fff; border-color: #fff; color: var(--blue); }
+  .pricing-card.featured .pricing-btn:hover { opacity: 0.9; }
+
+  /* TESTIMONIALS */
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+  .testimonial-card {
+    background: var(--white); border: 1.5px solid var(--gray-mid);
+    border-radius: var(--radius-lg); padding: 1.75rem;
+  }
+
+  .testimonial-stars { color: var(--green); font-size: 1rem; letter-spacing: 0.05em; margin-bottom: 1rem; }
+
+  .testimonial-quote {
+    font-size: 0.95rem; color: var(--text);
+    line-height: 1.65; font-weight: 300;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+
+  .avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+  }
+  .avatar.a { background: var(--blue-light); color: var(--blue-dark); }
+  .avatar.b { background: var(--green-light); color: var(--green-dark); }
+  .avatar.c { background: var(--gray-brand-light); color: var(--gray-brand); }
+
+  .author-name { font-size: 0.875rem; font-weight: 700; }
+  .author-role { font-size: 0.78rem; color: var(--text-muted); }
+
+  /* FAQ */
+  .faq-bg { background: var(--gray-light); }
+  .faq-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start; }
+  .faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .faq-item {
+    border: 1.5px solid var(--gray-mid); border-radius: var(--radius-md);
+    background: var(--white); overflow: hidden;
+  }
+
+  .faq-question {
+    width: 100%; text-align: left; padding: 1.1rem 1.25rem;
+    background: none; border: none; cursor: pointer;
+    font-size: 0.925rem; font-weight: 700; color: var(--text);
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    font-family: 'Nunito Sans', sans-serif; transition: color 0.2s;
+  }
+  .faq-question:hover { color: var(--blue); }
+
+  .faq-chevron { color: var(--text-muted); font-size: 1rem; transition: transform 0.25s; flex-shrink: 0; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--blue); }
+
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .faq-answer-inner { padding: 0 1.25rem 1.1rem; font-size: 0.875rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* CTA */
+  .cta-section {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+    color: #fff; text-align: center; padding: 7rem 5vw;
+  }
+  .cta-section .section-tag { color: rgba(255,255,255,0.7); justify-content: center; display: flex; }
+  .cta-section .section-title { color: #fff; margin-top: 0.5rem; }
+  .cta-section .section-sub { color: rgba(255,255,255,0.75); margin: 0 auto 2.5rem; }
+
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; }
+
+  .btn-white {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: #fff; color: var(--blue);
+    padding: 0.9rem 2rem; border-radius: 99px;
+    text-decoration: none; font-weight: 700; font-size: 0.95rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-white:hover { opacity: 0.92; transform: translateY(-2px); }
+
+  .btn-ghost-inv {
+    color: rgba(255,255,255,0.75); font-size: 0.9rem; font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid rgba(255,255,255,0.35);
+    padding-bottom: 2px; transition: color 0.2s;
+  }
+  .btn-ghost-inv:hover { color: #fff; }
+
+  /* FOOTER */
+  footer {
+    background: var(--black); border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 3rem 5vw;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+  }
+
+  .footer-logo img { height: 48px; width: auto; margin-bottom: 0.75rem; }
+  .footer-desc { font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.65; max-width: 260px; }
+
+  .footer-col h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 1.1rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col a { text-decoration: none; font-size: 0.875rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+  .footer-col a:hover { color: var(--blue); }
+
+  .footer-bottom {
+    background: var(--black); border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 1.25rem 5vw; display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+
+  /* ANIMATIONS */
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  /* ACCENT DIVIDER */
+  .divider-accent {
+    height: 4px;
+    background: linear-gradient(90deg, var(--blue) 0%, var(--green) 100%);
+    border: none;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 6rem; }
+    .hero-visual { display: none; }
+    .features-header { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+    .pricing-card.featured { transform: none; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .faq-layout { grid-template-columns: 1fr; gap: 2rem; }
+    footer { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 4rem 5vw; }
+    .features-grid { grid-template-columns: 1fr; }
+    .products-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    footer { grid-template-columns: 1fr; gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+LOGOEOF
+
+# Inject logo base64 into the HTML
+LOGO_DATA=$(cat /tmp/logo_b64.txt)
+
+cat >> /mnt/user-data/outputs/smartsection.html << NAVEOF
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="data:image/jpeg;base64,${LOGO_DATA}" alt="SmartSection Logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#products">Produkte</a></li>
+    <li><a href="#pricing">Preise</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact" class="nav-cta">Jetzt starten</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-tag">Neu · Kollektion 2025</div>
+    <h1>Einkaufen, das<br><em>wirklich smart</em><br>ist.</h1>
+    <p class="hero-sub">SmartSection verbindet intelligente Technologie mit kuratierten Produkten – damit du schneller und einfacher das findest, was du wirklich brauchst.</p>
+    <div class="hero-actions">
+      <a href="#products" class="btn-primary">Shop entdecken <span class="arrow">→</span></a>
+      <a href="#features" class="btn-ghost">Mehr erfahren</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">12k+</div>
+        <div class="hero-stat-label">Kunden</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">4.9★</div>
+        <div class="hero-stat-label">Bewertung</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">98%</div>
+        <div class="hero-stat-label">Zufriedenheit</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <img class="brain-logo-hero" src="data:image/jpeg;base64,${LOGO_DATA}" alt="SmartSection – intelligentes Denken">
+  </div>
+</section>
+
+<hr class="divider-accent">
+
+NAVEOF
+
+cat >> /mnt/user-data/outputs/smartsection.html << 'RESTEOF'
+<!-- FEATURES -->
+<section class="features-bg" id="features">
+  <div class="features-header fade-in">
+    <div>
+      <div class="section-tag">Warum SmartSection</div>
+      <h2 class="section-title">Mehr als<br>nur ein Shop.</h2>
+    </div>
+    <p class="section-sub">Wir kombinieren smarte Technologie mit handverlesener Produktauswahl – für ein Einkaufserlebnis, das wirklich funktioniert.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card fade-in">
+      <div class="feature-icon blue">🧠</div>
+      <h3>Intelligente Empfehlungen</h3>
+      <p>Je mehr du entdeckst, desto besser versteht SmartSection deinen Stil und macht passende Vorschläge.</p>
+    </div>
+    <div class="feature-card fade-in" style="transition-delay:0.1s">
+      <div class="feature-icon green">✦</div>
+      <h3>Kuratierte Auswahl</h3>
+      <p>Jedes Produkt ist handverlesen. Kein Massenmarkt – nur Dinge mit echtem Mehrwert und Qualität.</p>
+    </div>
+    <div class="feature-card fade-in" style="transition-delay:0.2s">
+      <div class="feature-icon gray">🚀</div>
+      <h3>Schnelle Lieferung</h3>
+      <p>Versand innerhalb von 24 Stunden, kostenlos ab 39 €. Rücksendung unkompliziert und kostenlos.</p>
+    </div>
+    <div class="feature-card fade-in" style="transition-delay:0.1s">
+      <div class="feature-icon green">🌿</div>
+      <h3>Nachhaltigkeit</h3>
+      <p>Alle Partner werden auf faire Produktion und nachhaltige Materialien geprüft. Gut für dich und die Welt.</p>
+    </div>
+    <div class="feature-card fade-in" style="transition-delay:0.2s">
+      <div class="feature-icon blue">⚡</div>
+      <h3>Exklusive Deals</h3>
+      <p>Als Mitglied erhältst du Zugang zu limitierten Angeboten und Early Access zu neuen Kollektionen.</p>
+    </div>
+    <div class="feature-card fade-in" style="transition-delay:0.3s">
+      <div class="feature-icon gray">💬</div>
+      <h3>5-Sterne-Support</h3>
+      <p>Unser Team ist sieben Tage die Woche für dich da – per Chat, E-Mail oder Telefon.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider-accent">
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="products-header fade-in">
+    <div>
+      <div class="section-tag">Aktuelle Kollektion</div>
+      <h2 class="section-title">Neue Highlights</h2>
+    </div>
+    <a href="#" class="btn-ghost">Alle Produkte →</a>
+  </div>
+  <div class="products-grid">
+    <div class="product-tile fade-in">
+      <div class="product-tile-img">
+        🧺
+        <span class="product-tile-new">Neu</span>
+      </div>
+      <div class="product-tile-info">
+        <div class="product-tile-cat">Wohnen</div>
+        <div class="product-tile-name">Rattan-Aufbewahrungskorb</div>
+        <div class="product-tile-bottom">
+          <div class="product-price">€ 39,90</div>
+          <button class="add-btn" aria-label="In den Warenkorb">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-tile fade-in" style="transition-delay:0.08s">
+      <div class="product-tile-img">🌿</div>
+      <div class="product-tile-info">
+        <div class="product-tile-cat">Lifestyle</div>
+        <div class="product-tile-name">Naturseife Kollektion</div>
+        <div class="product-tile-bottom">
+          <div class="product-price">€ 22,00</div>
+          <button class="add-btn" aria-label="In den Warenkorb">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-tile fade-in" style="transition-delay:0.16s">
+      <div class="product-tile-img">
+        ☕
+        <span class="product-tile-new">−20%</span>
+      </div>
+      <div class="product-tile-info">
+        <div class="product-tile-cat">Küche</div>
+        <div class="product-tile-name">Handgemachte Tasse</div>
+        <div class="product-tile-bottom">
+          <div class="product-price">€ 28,00</div>
+          <button class="add-btn" aria-label="In den Warenkorb">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-tile fade-in" style="transition-delay:0.24s">
+      <div class="product-tile-img">🎋</div>
+      <div class="product-tile-info">
+        <div class="product-tile-cat">Deko</div>
+        <div class="product-tile-name">Bambus-Wandpanel</div>
+        <div class="product-tile-bottom">
+          <div class="product-price">€ 59,00</div>
+          <button class="add-btn" aria-label="In den Warenkorb">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider-accent">
+
+<!-- PRICING -->
+<section class="pricing-bg" id="pricing">
+  <div class="pricing-header fade-in">
+    <div class="section-tag">Mitgliedschaft</div>
+    <h2 class="section-title">Wähle deinen Plan</h2>
+    <p class="section-sub">Mit einem Membership-Abo sparst du bei jedem Einkauf und erhältst exklusive Vorteile.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card fade-in">
+      <div class="pricing-card-tag">Free</div>
+      <div class="pricing-price">€ 0</div>
+      <div class="pricing-period">für immer kostenlos</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li>Zugang zum vollen Sortiment</li>
+        <li>Standardversand ab € 39</li>
+        <li>E-Mail-Support</li>
+        <li>Monatlicher Newsletter</li>
+      </ul>
+      <button class="pricing-btn">Kostenlos starten</button>
+    </div>
+    <div class="pricing-card featured fade-in" style="transition-delay:0.1s">
+      <div class="pricing-card-tag">✦ Beliebteste Wahl</div>
+      <div class="pricing-price">€ 7</div>
+      <div class="pricing-period">pro Monat, jederzeit kündbar</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li>Alles aus Free</li>
+        <li>Kostenloser Versand immer</li>
+        <li>10 % auf alle Produkte</li>
+        <li>Early Access zu Neuheiten</li>
+        <li>Prioritäts-Support</li>
+      </ul>
+      <button class="pricing-btn">Jetzt Member werden</button>
+    </div>
+    <div class="pricing-card fade-in" style="transition-delay:0.2s">
+      <div class="pricing-card-tag">Premium</div>
+      <div class="pricing-price">€ 19</div>
+      <div class="pricing-period">pro Monat</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li>Alles aus Standard</li>
+        <li>20 % auf alle Produkte</li>
+        <li>Persönlicher Style-Berater</li>
+        <li>Exklusive Kollektionen</li>
+        <li>Gratis-Geschenkverpackung</li>
+      </ul>
+      <button class="pricing-btn">Premium starten</button>
+    </div>
+  </div>
+</section>
+
+<hr class="divider-accent">
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="fade-in" style="margin-bottom:3rem">
+    <div class="section-tag">Kundenstimmen</div>
+    <h2 class="section-title">Was andere sagen</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card fade-in">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">„SmartSection hat mein Einkaufserlebnis komplett verändert. Die Auswahl ist so durchdacht – ich finde immer genau das, was zu mir passt."</p>
+      <div class="testimonial-author">
+        <div class="avatar a">AS</div>
+        <div>
+          <div class="author-name">Anna S.</div>
+          <div class="author-role">Premium-Mitglied seit 2023</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card fade-in" style="transition-delay:0.1s">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">„Der Support ist unglaublich. Innerhalb von Minuten hatte ich eine Antwort. Die Qualität der Produkte ist wirklich außergewöhnlich."</p>
+      <div class="testimonial-author">
+        <div class="avatar b">MK</div>
+        <div>
+          <div class="author-name">Markus K.</div>
+          <div class="author-role">Standard-Mitglied</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card fade-in" style="transition-delay:0.2s">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">„Ich liebe die nachhaltige Ausrichtung. Man merkt, dass hier mit Sorgfalt ausgewählt wird. Tolle Plattform – 10/10!"</p>
+      <div class="testimonial-author">
+        <div class="avatar c">LB</div>
+        <div>
+          <div class="author-name">Laura B.</div>
+          <div class="author-role">Premium-Mitglied</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider-accent">
+
+<!-- FAQ -->
+<section class="faq-bg" id="faq">
+  <div class="faq-layout">
+    <div class="fade-in">
+      <div class="section-tag">Häufige Fragen</div>
+      <h2 class="section-title">Du hast Fragen?</h2>
+      <p class="section-sub" style="margin-top:1rem;">Wir haben Antworten. Falls nicht – unser Support-Team ist immer für dich da.</p>
+      <a href="#contact" class="btn-primary" style="margin-top:2rem; display:inline-flex;">Kontakt aufnehmen</a>
+    </div>
+    <div class="faq-list fade-in" style="transition-delay:0.1s">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Wie schnell wird meine Bestellung geliefert? <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Wir versenden alle Bestellungen innerhalb von 24 Stunden. Die Lieferzeit beträgt in Deutschland 2–4 Werktage. Standard-Mitglieder zahlen Versandkosten ab €39 Bestellwert, Premium-Mitglieder erhalten kostenlosen Versand.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Kann ich meine Bestellung zurückgeben? <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Selbstverständlich! Du hast 30 Tage Zeit, Produkte zurückzuschicken. Der Rückversand ist für alle Kunden kostenlos. Das Geld wird innerhalb von 5–7 Werktagen zurücküberwiesen.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Wie funktioniert die Mitgliedschaft? <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Die Mitgliedschaft läuft monatlich und kann jederzeit ohne Kündigungsfrist gekündigt werden. Du wählst deinen Plan, hinterlegst eine Zahlungsmethode und profitierst sofort von allen Vorteilen. Keine versteckten Kosten.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Sind die Produkte wirklich nachhaltig? <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Wir überprüfen alle Lieferanten nach strengen Nachhaltigkeitskriterien. Dazu gehören faire Löhne, umweltfreundliche Materialien und kurze Lieferketten.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Wie kann ich den Support erreichen? <span class="faq-chevron">▾</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Unser Support-Team ist 7 Tage die Woche von 8–20 Uhr erreichbar – per Live-Chat, E-Mail (hallo@smartsection.de) oder telefonisch. Premium-Mitglieder erhalten Prioritäts-Support.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="fade-in">
+    <div class="section-tag">Jetzt loslegen</div>
+    <h2 class="section-title">Bereit für smarte<br>Einkaufserlebnisse?</h2>
+    <p class="section-sub">Tritt über 12.000 zufriedenen Kunden bei und entdecke, wie angenehm Online-Shopping sein kann.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-white">Kostenlos registrieren →</a>
+      <a href="#products" class="btn-ghost-inv">Shop erkunden</a>
+    </div>
+  </div>
+</section>
+
+RESTEOF
+
+# Footer with logo
+cat >> /mnt/user-data/outputs/smartsection.html << FOOTEREOF
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">
+      <img src="data:image/jpeg;base64,${LOGO_DATA}" alt="SmartSection">
+    </div>
+    <p class="footer-desc">Kuratierter E-Commerce für Menschen, die smarte Entscheidungen treffen. Durchdacht, nachhaltig, schön.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Shop</h4>
+    <ul>
+      <li><a href="#">Wohnen</a></li>
+      <li><a href="#">Lifestyle</a></li>
+      <li><a href="#">Küche</a></li>
+      <li><a href="#">Deko</a></li>
+      <li><a href="#">Sale</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Unternehmen</h4>
+    <ul>
+      <li><a href="#">Über uns</a></li>
+      <li><a href="#">Nachhaltigkeit</a></li>
+      <li><a href="#">Karriere</a></li>
+      <li><a href="#">Presse</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Hilfe</h4>
+    <ul>
+      <li><a href="#">FAQ</a></li>
+      <li><a href="#">Versand</a></li>
+      <li><a href="#">Rückgabe</a></li>
+      <li><a href="#">Kontakt</a></li>
+      <li><a href="#">Datenschutz</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 SmartSection. Alle Rechte vorbehalten.</p>
+  <p>Made with ♡ in Mainz</p>
+</div>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const answer = item.querySelector('.faq-answer');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.faq-answer').style.maxHeight = '0';
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.textContent = '✓';
+      this.style.background = '#a1c93a';
+      setTimeout(() => { this.textContent = '+'; this.style.background = ''; }, 1200);
+    });
+  });
+</script>
+</body>
+</html>
+FOOTEREOF
+
+echo "Done! File size: $(wc -c < /mnt/user-data/outputs/smartsection.html) bytes"
