@@ -858,7 +858,7 @@
     <h4>Unternehmen</h4>
     <ul>
       <li><a href="#">Über uns</a></li>
-      <li><a href="#">Impressum</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
       <li><a href="#">Karriere</a></li>
       <li><a href="#">Presse</a></li>
     </ul>
@@ -870,12 +870,12 @@
       <li><a href="#">Versand</a></li>
       <li><a href="#">Rückgabe</a></li>
       <li><a href="#">Kontakt</a></li>
-      <li><a href="#">Datenschutz</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
     </ul>
   </div>
 </footer>
 <div class="footer-bottom">
-  <p>© 2026 SmartSection. Alle Rechte vorbehalten.</p>
+  <p>© 2026 SmartSection. Alle Rechte vorbehalten. · <a href="impressum.html" style="color:rgba(255,255,255,0.4);text-decoration:none;">Impressum</a> · <a href="datenschutz.html" style="color:rgba(255,255,255,0.4);text-decoration:none;">Datenschutz</a></p>
   <p>Made with ♡ in Wiesbaden</p>
 </div>
 
@@ -909,5 +909,23 @@
     });
   });
 </script>
+
+<!-- COOKIE-BANNER (DSGVO-konform) -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1a1a2e;color:#fff;padding:1.25rem 5vw;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;border-top:3px solid #00b9f1;font-family:Nunito Sans,sans-serif;font-size:0.875rem;line-height:1.5;" role="dialog" aria-live="polite" aria-label="Cookie-Einstellungen">
+  <p style="margin:0;max-width:700px;color:rgba(255,255,255,0.85);">&#x1F36A; Wir nutzen Cookies, um dir die bestmögliche Erfahrung zu bieten. Technisch notwendige Cookies sind immer aktiv. Weitere Infos in unserer <a href="datenschutz.html" style="color:#00b9f1;">Datenschutzerklärung</a>.</p>
+  <div style="display:flex;gap:0.75rem;flex-shrink:0;">
+    <button onclick="cookieDecline()" style="padding:0.55rem 1.2rem;border-radius:99px;border:2px solid rgba(255,255,255,0.3);background:transparent;color:#fff;font-weight:700;cursor:pointer;font-size:0.85rem;">Nur notwendige</button>
+    <button onclick="cookieAccept()" style="padding:0.55rem 1.4rem;border-radius:99px;border:none;background:#00b9f1;color:#fff;font-weight:700;cursor:pointer;font-size:0.85rem;box-shadow:0 4px 14px rgba(0,185,241,0.4);">Alle akzeptieren</button>
+  </div>
+</div>
+<script>
+(function(){
+  var b=document.getElementById("cookie-banner");
+  if(b && !localStorage.getItem("ss_cookie_consent")){b.style.display="flex";}
+})();
+function cookieAccept(){localStorage.setItem("ss_cookie_consent","all");document.getElementById("cookie-banner").style.display="none";}
+function cookieDecline(){localStorage.setItem("ss_cookie_consent","necessary");document.getElementById("cookie-banner").style.display="none";}
+</script>
+
 </body>
 </html>
